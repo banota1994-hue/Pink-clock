@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  font-family: 'Cairo', sans-serif;
+}
+
+.card {
+  width: 750px;
+  height: 200px;
+  padding: 20px 60px;
+  border-radius: 26px;
+  text-align: center;
+  transition: background 0.5s ease;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.day {
+  background: #f8c8dc;
+}
+
+.night {
+  background: #e08ab3;
+}
+
+.greeting {
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.time {
+  font-size: 48px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 2px;
+}
+
+.date {
+  margin-top: 6px;
+  font-size: 14px;
+  color: white;
+  opacity: 0.95;
+}
+</style>
+</head>
+
+<body>
+
+<div id="card" class="card">
+  <div id="greeting" class="greeting"></div>
+  <div id="time" class="time"></div>
+  <div id="date" class="date"></div>
+</div>
+
+<script>
+function updateClock() {
+  const now = new Date();
+  let hours = now.getHours();
+  let minutes = now.getMinutes();
+
+  const greeting = document.getElementById("greeting");
+  const card = document.getElementById("card");
+
+  // نزيل الكلاسات أولاً
+  card.classList.remove("day", "night");
+
+  if (hours < 12) {
+    greeting.textContent = "صباح الخير ☀️";
+    card.classList.add("day");
+  } else if (hours < 17) {  // من 12 إلى 4:59
+    greeting.textContent = "مساء الخير 🌤";
+    card.classList.add("day");
+  } else {  // من 5:00 مساءً يبدأ اللون الليلي
+    greeting.textContent = "مساء الخير 🌙";
+    card.classList.add("night");
+  }
+
+  const isPM = hours >= 12;
+  hours = hours % 12 || 12;
+
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+
+  document.getElementById("time").textContent =
+    hours + ":" + minutes + " " + (isPM ? "PM" : "AM");
+
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById("date").textContent =
+    now.toLocaleDateString('ar-QA', options);
+}
+
+setInterval(updateClock, 60000);
+updateClock();
+</script>
+
+</body>
+</html>
